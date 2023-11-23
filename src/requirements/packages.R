@@ -1,6 +1,7 @@
 packages <- c("here",
               "tidyverse",
-              "openxlsx")
+              "openxlsx",
+              "leaflet")
 
 
 lapply(packages, library, character.only=TRUE)
