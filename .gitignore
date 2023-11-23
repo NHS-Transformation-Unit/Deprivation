@@ -47,3 +47,10 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# HTML outputs
+*.html
+
+# Excel and CSV files
+*.xlsx
+*.csv
