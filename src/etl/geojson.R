@@ -15,3 +15,8 @@ geojson_la <- st_read(geojson_la_url)
 geojson_subicb <- st_read(geojson_subicb_url)
 geojson_icb <- st_read(geojson_icb_url)
 lsoa_lookup <- st_read(geojson_lsoa_lookup_url)
+
+
+# Drop geometry for Lookups -----------------------------------------------
+
+lsoa_lookup_df <- st_drop_geometry(lsoa_lookup)
