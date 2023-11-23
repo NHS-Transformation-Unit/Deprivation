@@ -1,6 +1,6 @@
 packages <- c("here",
               "tidyverse",
-              "readxl")
+              "openxlsx")
 
 
 lapply(packages, library, character.only=TRUE)
