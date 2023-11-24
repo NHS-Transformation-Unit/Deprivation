@@ -34,7 +34,7 @@ imd_domains_2019_long <- imd_domains_2019 %>%
                                  TRUE ~ "Decile"),
          Metric_Short = case_when(Metric_Type == "Rank" ~ str_sub(Metric, start = 1, end = nchar(Metric) - 5),
                                    TRUE ~ str_sub(Metric, start = 1, end = nchar(Metric) - 7)),
-         Metric_Tidy = case_when(Metric_Short == "IMD" ~ "IMD",
+         Metric_Tidy = case_when(Metric_Short == "IMD" ~ "Overall IMD",
                                  Metric_Short == "Income" ~ "Income",
                                  Metric_Short == "Employment" ~ "Employment",
                                  Metric_Short == "Edu_Skills_Train" ~ "Education, Skills and Training",
