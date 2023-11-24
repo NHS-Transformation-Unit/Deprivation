@@ -3,7 +3,8 @@ packages <- c("here",
               "openxlsx",
               "leaflet",
               "sf",
-              "shiny")
+              "shiny",
+              "plotly")
 
 
 lapply(packages, library, character.only=TRUE)
