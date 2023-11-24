@@ -2,6 +2,7 @@
 # Link geojson lsoa with deprivation --------------------------------------
 
 imd_geo <- geojson_lsoa %>%
+  filter(substr(LSOA11CD,1,1) == "E") %>%
   left_join(imd_domains_2019_long, by = c("LSOA11CD" = "LSOA_Code_2011")) %>%
   left_join(lsoa_lookup_df, by = c("LSOA11CD"))
 
