@@ -4,7 +4,8 @@ packages <- c("here",
               "leaflet",
               "sf",
               "shiny",
-              "plotly")
+              "plotly",
+              "markdown")
 
 
 lapply(packages, library, character.only=TRUE)
