@@ -52,7 +52,7 @@ lsoa_decile_icb_comp_plot <- function(imd){
     mutate("Prop" = LSOAs/sum(LSOAs)) %>%
     mutate(Decile = factor(Decile, levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)))
   
-  plot_title <- paste0("Proportion of ", dep_deciles[[1,1]], "<br>", "LSOAs in each deprivation decile for ", dep_deciles[[1,2]])
+  plot_title <- paste0("Proportion of LSOAs in each deprivation decile for ", dep_deciles[[1,2]])
   
   hline <- function(y = 0, color = "black") {
     list(
@@ -68,7 +68,7 @@ lsoa_decile_icb_comp_plot <- function(imd){
   }
   
   dep_deciles %>%
-    plot_ly(x = ~`Decile`, y = ~Prop, type = "bar", color = ~ICB22NM, colors = c("#407EC9", "#8A1538"),
+    plot_ly(x = ~`Decile`, y = ~Prop, type = "bar", color = ~ICB22NM, colors = c("#407EC9", "#F68D2E"),
             hoverinfo = 'text', text = ~paste0("Decile ", `Decile`, ": ",
                                                round(`Prop`*100,2), "%"), textposition = "none") %>%
     layout(shapes = list(hline(0.1)),
@@ -77,15 +77,12 @@ lsoa_decile_icb_comp_plot <- function(imd){
            yaxis = list(title = list(text = "Proportion of LSOAs"),
                         tickformat = ".0%"),
            margin = list(t = 50),
-           legend = list(x = 0.5, y = -0.3))
+           legend = list(
+             orientation = 'h',
+             x = 0.5,
+             y = -0.2
+           ))
   
   
   
 }
-
-test_imd <- imd_geo %>%
-  filter(ICB22NM %in% c("NHS North East London Integrated Care Board", "NHS North East and North Cumbria Integrated Care Board")) %>%
-  filter(Metric_Tidy == "Crime")
-
-
-lsoa_decile_icb_comp_plot(test_imd)
