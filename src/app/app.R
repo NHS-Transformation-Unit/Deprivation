@@ -6,7 +6,7 @@ source("../etl/geojson.R")
 source("../etl/load.R")
 source("../etl/geo_linkage.R")
 source("../visualisation/maps.R")
-
+source("../visualisation/charts.R")
 
 
 
@@ -28,7 +28,7 @@ ui <- fluidPage(
         position: absolute;
         top: 0;
         right: 0;
-        margin: 10px; /* Optional margin for spacing */
+        margin: 10px;
       }
     ")),
     tags$script(HTML('
@@ -125,7 +125,21 @@ ui <- fluidPage(
     )
       ),
     tabPanel(
-      "Compare Deprivation Domains"
+      "Compare Deprivation Domains",
+      sidebarLayout(
+        sidebarPanel(width = 3,
+                     selectInput("icb_domain",
+                                 "Select ICB:",
+                                 choices = sort(unique(imd_geo$ICB22NM)))
+        ),
+        mainPanel(
+          h2("Compare Deprivation Domains"),
+          HTML("<hr>
+               Select an ICB from the dropdown to update the chart below and show a breakdown of the 
+               number of LSOAs in each decile for the domains.
+               <br>")
+        ),
+      )
     ),
     tabPanel(
       "Compare ICBs",
@@ -136,18 +150,34 @@ ui <- fluidPage(
                                  choices = sort(unique(imd_geo$ICB22NM))),
                      selectInput("icb_comp2",
                                  "Select second ICB:",
-                                 choices = sort(unique(imd_geo$ICB22NM))),
+                                 choices = NULL),
                      selectInput("metric_icb_comp",
                                  "Select Deprivation Domain:",
                                  choices = unique(imd_geo$Metric_Tidy))
         ),
       
-        mainPanel()
+        mainPanel(
+          h2("Compare ICBs Deprivation Domains"),
+          HTML("<hr>
+               Select two ICBs to compare using the dropdowns to the left to update the maps and the chart below.
+               The deprivation domain can also be changed using the final dropdown menu.
+               <br>
+               <br>"),
+          fluidRow(
+          column(6, leafletOutput("deprivation_map_icb1")),
+          column(6, leafletOutput("deprivation_map_icb2"))
+          ),
+          HTML("<br>
+               <br>"),
+          fluidRow(plotlyOutput("dep_deciles_icb_comp_plot")
+          ),
+          plotlyOutput("dep_deciles_plot_icb_comp")
         )
+      )
     ),
     tabPanel(
       "Metadata",
-      mainPanel(
+
         h2("Metadata"),
         HTML("<hr/>
              <br/>"),
@@ -171,13 +201,12 @@ ui <- fluidPage(
              the instructions on cloning the repository within the <b>ReadMe</b> file.")
       )
     )
-    )
 )
 
 
 # server ------------------------------------------------------------------
 
-server <- function(input, output) {
+server <- function(input, output, session) {
 
   imd_geo_filtered <- reactive({
     imd_geo %>%
@@ -196,10 +225,72 @@ server <- function(input, output) {
   })
   
   
+  
+  ##ICB Comparisons
+  
+  selected_items <- reactiveValues(first = NULL, second = NULL)
+  
+  observe({
+    # Update the selected item in the reactiveValues
+    selected_items$first <- input$icb_comp1
     
+    # Preserve the selected item in the second dropdown
+    selected_second <- isolate(input$second_dropdown)
+    
+    # Filter choices for the second dropdown based on the selected item in the first dropdown
+    choices_second_dropdown <- sort(setdiff(unique(imd_geo$ICB22NM), selected_items$first))
+    
+    # Update choices in the second dropdown
+    updateSelectInput(session, "icb_comp2", choices = choices_second_dropdown, selected = selected_second)
+  })
+  
+  imd_geo_filtered_icb1 <- reactive({
+    imd_geo %>%
+      filter(ICB22NM == input$icb_comp1,
+             Metric_Tidy == input$metric_icb_comp
+      )
+    
+    
+  })
+  
+  geo_icb_filtered_icb1 <- reactive({
+    
+    geojson_icb_linked %>%
+      filter(ICB22NM == input$icb_comp1)
+    
+  })
+  
+  imd_geo_filtered_icb2 <- reactive({
+    imd_geo %>%
+      filter(ICB22NM == input$icb_comp2,
+             Metric_Tidy == input$metric_icb_comp
+      )
+    
+    
+  })
+  
+  geo_icb_filtered_icb2 <- reactive({
+    
+    geojson_icb_linked %>%
+      filter(ICB22NM == input$icb_comp2)
+    
+  })  
+  
+  
+  imd_geo_filtered_icb_comp <- reactive({
+    imd_geo %>%
+      filter(ICB22NM %in%  c(input$icb_comp1, input$icb_comp2),
+             Metric_Tidy == input$metric_icb_comp
+      ) %>%
+      mutate(ICB22NM = factor(ICB22NM, levels = c(input$icb_comp1, input$icb_comp2)))
+
+
+  })
+  
+  
     output$deprivation_map <- renderLeaflet({
       
-      lsoa_map(imd = imd_geo_filtered(), geo_icb = geo_icb_filtered())
+      lsoa_map(imd = imd_geo_filtered(), geo_icb = geo_icb_filtered(), pal = "Blues")
       
     })
     
@@ -208,6 +299,25 @@ server <- function(input, output) {
       
       lsoa_decile_plot(imd = imd_geo_filtered())
       
+    )
+    
+    
+    output$deprivation_map_icb1 <- renderLeaflet({
+      
+      lsoa_map(imd = imd_geo_filtered_icb1(), geo_icb = geo_icb_filtered_icb1(), pal = "Blues")
+      
+    })
+    
+    output$deprivation_map_icb2 <- renderLeaflet({
+      
+      lsoa_map(imd = imd_geo_filtered_icb2(), geo_icb = geo_icb_filtered_icb2(), pal = "Oranges")
+      
+    })
+    
+    
+    output$dep_deciles_icb_comp_plot <- renderPlotly(
+      
+      lsoa_decile_icb_comp_plot(imd = imd_geo_filtered_icb_comp())
     )
     
 }
