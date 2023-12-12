@@ -1,9 +1,9 @@
 
 # LSOA Map ----------------------------------------------------------------
 
-lsoa_map <- function(imd, geo_icb){
+lsoa_map <- function(imd, geo_icb, pal){
   
-  pal_fac_imd<-colorFactor(palette = "Blues", levels = 10:1, domain = imd$Decile)
+  pal_fac_imd<-colorFactor(palette = pal, levels = 10:1, domain = imd$Decile)
   
   leaflet(imd) %>%
     addPolygons(data = geo_icb, color = "black", weight = 3) %>%
@@ -11,7 +11,7 @@ lsoa_map <- function(imd, geo_icb){
                 color = "white", fillColor = ~pal_fac_imd(Decile),
                 label = ~paste0(imd$LSOA11NM.y,": Decile - ", imd$Decile)
     ) %>%
-    addProviderTiles(providers$CartoDB.Voyager) %>%
+    addProviderTiles("CartoDB.Positron") %>%
     addLegend(values = imd$Decile, pal = pal_fac_imd, title = "IMD Decile - 2019", position = "topright")
   
   
