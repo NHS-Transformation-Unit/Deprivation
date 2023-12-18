@@ -86,3 +86,49 @@ lsoa_decile_icb_comp_plot <- function(imd){
   
   
 }
+
+
+# Domain Comparison -------------------------------------------------------
+
+lsoa_decile_domain_comp_plot <- function(imd) {
+  
+  dep_domains <- imd %>%
+    st_drop_geometry() %>%
+    filter(Metric_Short != "IMD") %>%
+    group_by(Metric_Short, Metric_Tidy, Decile) %>%
+    summarise(LSOAs = n()) %>%
+    mutate(Total = sum(LSOAs),
+           Prop = LSOAs/Total) %>%
+    mutate(Decile = factor(Decile, levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)))
+  
+  
+  domain_plot <- . %>% 
+    plot_ly(x = ~Decile, y = ~Prop, fill = ~Metric_Tidy, type = "bar",
+            hoverinfo = 'text', text = ~paste0(Metric_Tidy, " - Decile ", Decile, ": ",
+                                               round(Prop*100,2), "%"), textposition = "none"
+    ) %>%
+    add_annotations(
+      text = ~unique(Metric_Tidy),
+      x = 0.25,
+      y = 1.05,
+      yref = "paper",
+      xref = "paper",
+      xanchor = "left",
+      yanchor = "top",
+      showarrow = FALSE,
+      font = list(size = 10)
+    ) %>%
+    layout(shapes = list(hline(0.1)),
+           title = list(text = "IMD Domains"),
+           xaxis = list(title = list(text = "IMD Decile", standoff = 1)),
+           yaxis = list(title = list(text = "Proportion of LSOAs"),
+                        tickformat = ".0%"),
+           showlegend = FALSE,
+           margin = list( t= 40))
+
+  dep_domains %>%
+  group_by(Metric_Tidy) %>%
+  do(p = domain_plot(.)) %>%
+  subplot(nrows = 2, shareX = FALSE, shareY = TRUE, titleX = TRUE, margin = 0.05)
+
+}
