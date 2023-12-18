@@ -42,7 +42,7 @@ ui <- fluidPage(
     
   titlePanel(
     div(
-      h1("ICB Deprivation Dashboard"),
+      h1("ICB Deprivation Explorer"),
       img(src = "TU_logo_large.png", class = "title-image"),
       
       class = "title-with-image")
@@ -51,12 +51,12 @@ ui <- fluidPage(
 
     tabsetPanel(
       tabPanel("Introduction",
-               h2("Introduction to the ICB Deprivation Dashboard"),
+               h2("Introduction to the ICB Deprivation Explorer"),
                HTML("<hr/>"),
                HTML("<br/>
-                    This dashboard has been created to provide an insight into the deprivation of the population of residents living within each ICB across England.
-                    You can navigate through the different pages of this dashboard by clicking on the tabs at the top of the page. All of the data used to create this
-                    dashboard is publicly available, please see the Metadata page for more information on all sources. The code for creating this dashboard is available
+                    This app has been created to provide an insight into the deprivation of the population of residents living within each ICB across England.
+                    You can navigate through the different pages of this app by clicking on the tabs at the top of the page. All of the data used to create this
+                    app is publicly available, please see the Metadata page for more information on all sources. The code for creating this app is available
                     on the NHS Transformation Unit's GitHub page <a href = 'https://github.com/NHS-Transformation-Unit/Deprivation' target='_blank'>here</a>."),
                h3("How is deprivation measured?"),
                HTML("The deprivation of the resident population of an area is measured using the <b>Index of Multiple Deprivation</b>
@@ -79,8 +79,8 @@ ui <- fluidPage(
                     <br>
                     
                     "),
-               h3("What is contained within the dashboard?"),
-               HTML("This dashboard has been created to enable the user to explore the deprivation of residents within each ICB with a particular focus on:
+               h3("What is contained within the app?"),
+               HTML("This app has been created to enable the user to explore the deprivation of residents within each ICB with a particular focus on:
                     <ul>
                       <li>Identifying areas of deprivation</li>
                       <li>Exploring the variation of deprivation across the ICB</li>
@@ -184,7 +184,7 @@ ui <- fluidPage(
         HTML("<hr/>
              <br/>"),
         h3("Data Sources"),
-        HTML("The following data sources have been used for the creation of this dashboard:
+        HTML("The following data sources have been used for the creation of this app:
              <ul>
               <li>The 2019 IMD deprivation data which provides the data for the score, rank and decile that each
              LSOA is assigned to across each of the domains of deprivation is sourced from the <a href = 'https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019'
@@ -197,7 +197,7 @@ ui <- fluidPage(
              <br>
              "),
         h3("GitHub Repository"),
-        HTML("The code required to rebuild this dashboard using the R programming language and Shiny is available on 
+        HTML("The code required to rebuild this app using the R programming language and Shiny is available on 
              the <a href = 'https://github.com/NHS-Transformation-Unit/' target = '_blank'>NHS Transformation Unit's GitHub page</a> with the repository 
              available <a href = 'https://github.com/NHS-Transformation-Unit/Deprivation' target = 'blank'>here</a>. Please follow
              the instructions on cloning the repository within the <b>ReadMe</b> file.")
