@@ -1,12 +1,12 @@
 
 # Setup -------------------------------------------------------------------
 
-source("../requirements/packages.R")
-source("../etl/geojson.R")
-source("../etl/load.R")
-source("../etl/geo_linkage.R")
-source("../visualisation/maps.R")
-source("../visualisation/charts.R")
+source("requirements/packages.R")
+source("etl/geojson.R")
+source("etl/load.R")
+source("etl/geo_linkage.R")
+source("visualisation/maps.R")
+source("visualisation/charts.R")
 
 
 
