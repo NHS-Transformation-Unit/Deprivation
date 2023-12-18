@@ -137,7 +137,9 @@ ui <- fluidPage(
           HTML("<hr>
                Select an ICB from the dropdown to update the chart below and show a breakdown of the 
                number of LSOAs in each decile for the domains.
-               <br>")
+               <br>
+               <br>"),
+          plotlyOutput("domain_comp")
         ),
       )
     ),
@@ -287,6 +289,12 @@ server <- function(input, output, session) {
 
   })
   
+  imd_geo_filtered_domain_comp <- reactive({
+    imd_geo %>%
+      filter(ICB22NM == input$icb_domain)
+    
+  })
+  
   
     output$deprivation_map <- renderLeaflet({
       
@@ -319,6 +327,12 @@ server <- function(input, output, session) {
       
       lsoa_decile_icb_comp_plot(imd = imd_geo_filtered_icb_comp())
     )
+    
+    output$domain_comp <- renderPlotly({
+      
+      lsoa_decile_domain_comp_plot(imd = imd_geo_filtered_domain_comp())
+      
+    })
     
 }
 
