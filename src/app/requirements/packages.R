@@ -1,12 +1,9 @@
-packages <- c("here",
-              "tidyverse",
-              "openxlsx",
-              "leaflet",
-              "sf",
-              "shiny",
-              "plotly",
-              "markdown",
-              "knitr")
-
-
-lapply(packages, library, character.only=TRUE)
+library(here)
+library(tidyverse)
+library(openxlsx)
+library(leaflet)
+library(sf)
+library(shiny)
+library(plotly)
+library(markdown)
+library(knitr)
