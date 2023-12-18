@@ -3,6 +3,8 @@
 # Deprivation Explorer Shiny App for ICBs
 This repository contains the scripts to create an app to explore the 2019 Index of Multiple Deprivation (**IMD**) published by the [Ministry of Housing, Communities and Local Government](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019) for Integrated Care Boards (**ICBs**).
 
+A version of the app is currently deployed and available for viewing [here](https://nhs-tu-andy-wilson.shinyapps.io/ICB_Deprivation_Explorer/).
+
 <br/>
 
 ## Using the Repo
@@ -19,11 +21,11 @@ At present the structure of the repository is:
 ├───images
 └───src
     ├───app
+      ├───config
+      ├───etl
+      ├───requirements
+      └───visualisation
       └───www
-    ├───config
-    ├───etl
-    ├───requirements
-    └───visualisation
     
 ```
 
@@ -35,13 +37,13 @@ Images such as TU logos and branding to add to outputs.
 
 ### `src`
 
-All code is stored in src. This is subdivided into five modules:
+All code is stored in src within the `app` folder for deployment. This is subdivided into five modules:
 
-1. `app`: Files for creating the Shiny app and hosting relevant theme and image files for publication.
-2. `config`: Files for configuring the output such as the `theme.css`.
-3. `etl`: Files for downloading and processing IMD dataset and linking to relevant geospatial files.
-4. `requirements`: Requirements file for building the output html such as the `packages.R` script.
-5. `visualisation`: Files for producing the visualisations (charts and maps) used within the outputs.
+1. `config`: Files for configuring the output such as the `theme.css`.
+2. `etl`: Files for downloading and processing IMD dataset and linking to relevant geospatial files.
+3. `requirements`: Requirements file for building the output html such as the `packages.R` script.
+4. `visualisation`: Files for producing the visualisations (charts and maps) used within the outputs.
+5. `www`: Image and css files for deployment.
 
 ## Contributors
 
