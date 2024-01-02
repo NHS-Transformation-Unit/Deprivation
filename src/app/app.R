@@ -233,16 +233,9 @@ server <- function(input, output, session) {
   selected_items <- reactiveValues(first = NULL, second = NULL)
   
   observe({
-    # Update the selected item in the reactiveValues
     selected_items$first <- input$icb_comp1
-    
-    # Preserve the selected item in the second dropdown
     selected_second <- isolate(input$second_dropdown)
-    
-    # Filter choices for the second dropdown based on the selected item in the first dropdown
     choices_second_dropdown <- sort(setdiff(unique(imd_geo$ICB22NM), selected_items$first))
-    
-    # Update choices in the second dropdown
     updateSelectInput(session, "icb_comp2", choices = choices_second_dropdown, selected = selected_second)
   })
   
